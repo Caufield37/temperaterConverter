@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Temperature Converter</title>
+    </head>
+    <style>
+
+        body{
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        .parent{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100%;
+        }
+
+        .converter-box{
+            background-color: #eeeeee;
+            width: 400px;
+            height: 400px;
+            padding: 30px;
+            box-sizing: border-box;
+            border-radius: 8px;
+        }
+
+        .child *{
+            display: block;
+            margin-bottom: 20px;
+        }
+
+        .title{
+            font-size: 24px;
+            font-weight: normal;
+            letter-spacing: 1px;
+            color: #333333;
+            margin-top: 0;
+            margin-bottom: 25px;
+        }
+
+        #temperatureInput{
+            width: 100%;
+            padding: 12px 16px;
+            font-size: 16px;
+            border: 1px solid #cccccc;
+            border-radius: 6px;
+            background-color: #ffffff;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        #temperatureInput:focus{
+            border-color: #007bff;
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
+        }
+
+        #temperatureUnit{
+            width: 100%;
+            padding: 12px 40px 12px 16px;
+            font-size: 16px;
+            border: 1px solid #cccccc;
+            border-radius: 6px;
+            background-color: #ffffff;
+            box-sizing: border-box;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            outline: none;
+
+            appearance: none; 
+        }
+
+        .child button{
+            width: 100%;
+            padding: 12px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #ffffff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            box-sizing: border-box;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+            outline: none;
+        }
+
+        .child button:hover{
+            background: #0056b3;
+        }
+
+        .child button:active{
+            transform: scale(0.98);
+        }
+
+        .error {
+            color: #d9534f;
+            background-color: #f2dede;
+        }
+        .success {
+            color: #3c763d;
+            background-color: #dff0d8;
+        }
+    </style>
+    <body>
+        <div class="parent">
+            <div class="converter-box">
+
+                <h2 class="title">Temperature Converter</h2>
+                <div class="child">
+                    <input type="text" name="temperatureInput" id="temperatureInput" placeholder="25" required>
+                    <select name="temperatureUnit" id="temperatureUnit">
+                        <option value="cToF">Celsius to Fahrenheit</option>
+                        <option value="fToC">Fahrenheit To Celsius</option>
+                        
+                    </select>
+                    <button type="button" id="convertBtn">Convert</button>
+                </div>
+                <div id="messageArea">
+                </div>
+            </div>
+            
+        </div>
+        <script>
+            const tempInput = document.getElementById("temperatureInput");
+            const temptUnit = document.getElementById("temperatureUnit");
+            const convertBtn = document.getElementById("convertBtn");
+            const messageArea = document.getElementById("messageArea");
+
+            convertBtn.addEventListener('click', function () {
+                const inputValue = tempInput.value.trim();
+                const conversionType = temptUnit.value;
+
+
+                if(inputValue == "" || isNaN(inputValue)) {
+                    messageArea.textContent = "Please enter a valid numeric value";
+                    messageArea.className = "error";
+                    return;
+                }
+
+                const numTemp = parseFloat(inputValue);
+                let convertedResult = 0;
+                let resultSymbol = "";
+                let originalSymbol = "";
+
+                if(conversionType == "cToF") {
+                    convertedResult = (numTemp * 9/5) + 32;
+                    originalSymbol = "'C";
+                    resultSymbol = "'F";
+                } else if(conversionType == "fToC") {
+                    convertedResult = (numTemp - 32) * 5/9;
+                    originalSymbol = "'F";
+                    resultSymbol = "'C";
+                }
+
+                messageArea.textContent = `${numTemp.toFixed(1)} ${originalSymbol} is equal to ${convertedResult.toFixed(2)} ${resultSymbol}.`;
+                messageArea.className = "success";
+            })
+        </script>
+
+    </body>
+</html>
